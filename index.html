@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SHA-256 Hasher</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      max-width: 600px;
+      margin: auto;
+      background-color: #f4f4f4;
+    }
+    h2 {
+      color: #333;
+    }
+    textarea, input, button {
+      width: 100%;
+      margin-top: 0.5rem;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 1rem;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      border: none;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #output {
+      word-break: break-all;
+      background-color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <h2>SHA-256 Hasher</h2>
+  <label for="inputText">Enter Text:</label>
+  <textarea id="inputText" rows="4" placeholder="Enter text here..."></textarea>
+  
+  <button onclick="generateHash()">Generate SHA-256 Hash</button>
+
+  <h3>Output:</h3>
+  <textarea id="output" rows="4" readonly></textarea>
+
+  <script>
+    async function generateHash() {
+      const text = document.getElementById("inputText").value;
+      const encoder = new TextEncoder();
+      const data = encoder.encode(text);
+      const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      document.getElementById("output").value = hashHex;
+    }
+  </script>
+</body>
+</html>
